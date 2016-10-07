@@ -77,50 +77,6 @@
     <string name="settings_number_key" translatable="false">number</string>
     <string name="settings_number_default_value" translatable="false">10</string>
 
-    <!--Section : Fashion-->
-    <string name="settings_section_fashion_label">Fashion</string>
-    <string name="settings_section_fashion_value">fashion</string>
-
-    <!--Section : Film-->
-    <string name="settings_section_film_label">Film</string>
-    <string name="settings_section_film_value">film</string>
-
-    <!--Section : Law-->
-    <string name="settings_section_law_label">Law</string>
-    <string name="settings_section_law_value">law</string>
-
-    <!--Section : Media-->
-    <string name="settings_section_media_label">Media</string>
-    <string name="settings_section_media_value">media</string>
-
-    <!--Section : Music-->
-    <string name="settings_section_music_label">Music</string>
-    <string name="settings_section_music_value">music</string>
-
-    <!--Section : Science-->
-    <string name="settings_section_science_label">Science</string>
-    <string name="settings_section_science_value">science</string>
-
-    <!--Section : Sports-->
-    <string name="settings_section_sports_label">Sports</string>
-    <string name="settings_section_sports_value">sports</string>
-
-    <!--Section : Technology-->
-    <string name="settings_section_technology_label">Technology</string>
-    <string name="settings_section_technology_value">technology</string>
-
-    <!--Section : Travel-->
-    <string name="settings_section_travel_label">Travel</string>
-    <string name="settings_section_travel_value">travel</string>
-
-    <!--Section : Television-->
-    <string name="settings_section_television_label">television &amp; radio</string>
-    <string name="settings_section_television_value">tv-and-radio</string>
-
-    <!--End for List Preference-->
-    <string name="settings_number_label">Number of News Items</string>
-    <string name="settings_number_key" translatable="false">number</string>
-    <string name="settings_number_default_value" translatable="false">10</string>
     <string name="no_internet">No Internet Connection.</string>
     <string name="error_getting_data">Error Getting Data</string>
 
