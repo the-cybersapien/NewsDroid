@@ -64,7 +64,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
 
         holder.titleView.setText(currentStory.getTitle());
         Picasso.with(getContext()).load(currentStory.getImgURL())
-                .placeholder(R.drawable.placeholder).error(R.drawable.placeholder).resize(250,150).into(holder.thumbnailImageView);
+                .error(R.drawable.placeholder).into(holder.thumbnailImageView);
         holder.dateTextView.setText(currentStory.getPublicationDate());
         holder.byLineTextView.setText(!currentStory.getByLine().equals("-"+Story.byLineDefault)?currentStory.getByLine():"");
         holder.trailingTextView.setText(currentStory.getTrailingText());

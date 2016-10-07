@@ -58,7 +58,7 @@
 
     <!--Section : Sports-->
     <string name="settings_section_sports_label">Sports</string>
-    <string name="settings_section_sports_value">sports</string>
+    <string name="settings_section_sports_value">sport</string>
 
     <!--Section : Technology-->
     <string name="settings_section_technology_label">Technology</string>
