@@ -22,7 +22,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
     private List<Story> storyList;
     private Context context;
 
-    public StoryAdapter(List<Story> storyList, Context context) {
+    public StoryAdapter(Context context, List<Story> storyList) {
         this.storyList = storyList;
         this.context = context;
     }
@@ -40,7 +40,7 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
         Context context = parent.getContext();
         LayoutInflater layoutInflater = LayoutInflater.from(context);
 
-        View storyView = layoutInflater.inflate(R.layout.story_item, parent);
+        View storyView = layoutInflater.inflate(R.layout.story_item, parent,false);
 
         return new ViewHolder(storyView);
     }
@@ -52,7 +52,8 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
         Story currentStory = storyList.get(position);
 
         holder.titleView.setText(currentStory.getTitle());
-        Picasso.with(getContext()).load(currentStory.getImgURL()).resize(250,150).into(holder.thumbnailImageView);
+        Picasso.with(getContext()).load(currentStory.getImgURL())
+                .placeholder(R.drawable.placeholder).error(R.drawable.placeholder).resize(250,150).into(holder.thumbnailImageView);
         holder.dateTextView.setText(currentStory.getPublicationDate());
         holder.byLineTextView.setText(currentStory.getByLine());
         holder.trailingTextView.setText(currentStory.getTrailingText());

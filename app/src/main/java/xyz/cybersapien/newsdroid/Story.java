@@ -7,6 +7,7 @@ package xyz.cybersapien.newsdroid;
 
 public class Story {
 
+
     /*Title of the Story*/
     private String title;
     /*Trailing text of the Story*/
@@ -15,6 +16,8 @@ public class Story {
     private String imgURL;
     /*Author of the Story*/
     private String byLine;
+    /*Default Value of the Story*/
+    public final static String byLineDefault = "NO_AUTHOR";
     /*URL to The Guardian page of the Story*/
     private String webLink;
     /*Publication date of the Story*/
