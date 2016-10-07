@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="Settings" >
+
+    <ListPreference
+        android:defaultValue="@string/settings_section_default_value"
+        android:key="@string/settings_section_key"
+        android:title="News Section"
+        />
+
+</PreferenceScreen>

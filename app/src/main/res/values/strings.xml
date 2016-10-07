@@ -1,3 +1,34 @@
 <resources>
     <string name="app_name">NewsDroid</string>
+
+    <!-- Strings related to Settings -->
+    <!-- Strings for Sections Preference-->
+    <string name="settings_section_label">Section</string>
+    <string name="settings_section_key" translatable="false">section</string>
+    <string name="settings_section_default_value" translatable="false">Technology</string>
+
+    <!--Section : Art and Design-->
+    <string name="settings_section_art_label">Art &amp; Design</string>
+    <string name="settings_section_art_value">artanddesign</string>
+
+    <!--Section : Books-->
+    <string name="settings_section_books_label">Books</string>
+    <string name="settings_section_book_value">books</string>
+
+    <!--Section : Business-->
+    <string name="settings_section_business_label">Business</string>
+    <string name="settings_section_business_value">business</string>
+
+    <!--Section : Culture-->
+    <string name="settings_section_culture_label">Culture</string>
+    <string name="settings_section_culture_value">culture</string>
+
+    <!--Section : Education-->
+    <string name="settings_section_education_label">Education</string>
+    <string name="settings_section_education_value">education</string>
+
+    <!--Section : Environment-->
+    <string name="settings_section_environment_label">Environment</string>
+    <string name="settings_section_environment_value">environment</string>
+
 </resources>

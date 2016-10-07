@@ -7,9 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
 
 /**
@@ -50,12 +48,11 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
 
         /*get Current Story*/
         Story currentStory = storyList.get(position);
-
         holder.titleView.setText(currentStory.getTitle());
         Picasso.with(getContext()).load(currentStory.getImgURL())
                 .placeholder(R.drawable.placeholder).error(R.drawable.placeholder).resize(250,150).into(holder.thumbnailImageView);
         holder.dateTextView.setText(currentStory.getPublicationDate());
-        holder.byLineTextView.setText(currentStory.getByLine());
+        holder.byLineTextView.setText(!currentStory.getByLine().equals("-"+Story.byLineDefault)?currentStory.getByLine():"");
         holder.trailingTextView.setText(currentStory.getTrailingText());
 
     }
@@ -83,6 +80,16 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
             thumbnailImageView = (ImageView) itemView.findViewById(R.id.story_item_imageview);
             byLineTextView = (TextView) itemView.findViewById(R.id.story_item_byline);
             dateTextView = (TextView) itemView.findViewById(R.id.story_item_date);
+        }
+    }
+
+    public void clearData(){
+        int size = this.getItemCount();
+        if (size > 0){
+            for (int i=0;i<size;i++){
+                this.storyList.remove(0);
+            }
+            this.notifyItemChanged(0, size);
         }
     }
 }

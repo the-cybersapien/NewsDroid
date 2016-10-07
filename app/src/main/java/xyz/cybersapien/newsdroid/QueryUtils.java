@@ -59,11 +59,20 @@ public final class QueryUtils {
         return dateTime;
     }
 
-//    public static List<Story> fetchStories(String requestUrl){
-//        //Create the url from the string
-//        URL url = createURL(requestUrl);
-//
-//    }
+    public static List<Story> fetchStories(String queryUrl) {
+
+        URL url = createURL(queryUrl);
+
+        String jsonResponse = null;
+
+        try {
+            jsonResponse = makeHttpRequest(url);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Problem getting HTTP data", e);
+        }
+
+        return getDataFromJson(jsonResponse);
+    }
 
     /**
      * Return the URL from the string.
