@@ -1,10 +1,13 @@
 package xyz.cybersapien.newsdroid;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.squareup.picasso.Picasso;
@@ -44,16 +47,28 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(StoryAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final StoryAdapter.ViewHolder holder, int position) {
 
         /*get Current Story*/
         Story currentStory = storyList.get(position);
+        /*Create a Uri to the story*/
+        Uri webAddressUri = Uri.parse(currentStory.getWebLink());
+        /*Create a webIntent to call if the Image or the headline is clicked*/
+        final Intent webIntent = new Intent(Intent.ACTION_VIEW, webAddressUri);
+        holder.rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(webIntent);
+            }
+        });
+
         holder.titleView.setText(currentStory.getTitle());
         Picasso.with(getContext()).load(currentStory.getImgURL())
                 .placeholder(R.drawable.placeholder).error(R.drawable.placeholder).resize(250,150).into(holder.thumbnailImageView);
         holder.dateTextView.setText(currentStory.getPublicationDate());
         holder.byLineTextView.setText(!currentStory.getByLine().equals("-"+Story.byLineDefault)?currentStory.getByLine():"");
         holder.trailingTextView.setText(currentStory.getTrailingText());
+
 
     }
 
@@ -72,9 +87,11 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.ViewHolder> 
         public ImageView thumbnailImageView;
         public TextView byLineTextView;
         public TextView dateTextView;
+        protected View rootView;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            rootView = itemView;
             titleView = (TextView) itemView.findViewById(R.id.story_item_title);
             trailingTextView = (TextView) itemView.findViewById(R.id.story_item_trailing_text);
             thumbnailImageView = (ImageView) itemView.findViewById(R.id.story_item_imageview);
