@@ -37,6 +37,7 @@ public final class NewsContract {
         /* Columns of the sources table*/
         public static final String _ID = BaseColumns._ID;
         public static final String COLUMN_SOURCE_NAME = "name";
+        public static final String COLUMN_SOURCE_SID = "sid";
         public static final String COLUMN_SOURCE_DESC = "desc";
         public static final String COLUMN_SOURCE_URL = "url";
         public static final String COLUMN_SOURCE_CATEGORY = "category";

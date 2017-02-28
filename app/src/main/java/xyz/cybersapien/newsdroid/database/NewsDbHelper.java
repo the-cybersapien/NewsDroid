@@ -29,8 +29,9 @@ public class NewsDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         /* Source Table */
         String SQL_CREATE_SOURCE_TABLE = "CREATE TABLE " + SourceEntry.TABLE_NAME
-                + " (" + SourceEntry._ID + " TEXT PRIMARY KEY, "
+                + " (" + SourceEntry._ID + " INTEGER PRIMARY KEY AUTO INCREMENT, "
                 + SourceEntry.COLUMN_SOURCE_NAME + " TEXT NOT NULL, "
+                + SourceEntry.COLUMN_SOURCE_SID + " TEXT NOT NULL, "
                 + SourceEntry.COLUMN_SOURCE_DESC + " TEXT NOT NULL, "
                 + SourceEntry.COLUMN_SOURCE_URL + " TEXT NOT NULL, "
                 + SourceEntry.COLUMN_SOURCE_CATEGORY + " TEXT NOT NULL, "
