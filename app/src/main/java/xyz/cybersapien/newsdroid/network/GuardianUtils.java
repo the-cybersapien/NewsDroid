@@ -11,7 +11,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import xyz.cybersapien.newsdroid.story.GuardianStory;
+import xyz.cybersapien.newsdroid.story.Guardian.GuardianStory;
 
 /**
  * Created by ogcybersapien on 6/10/16.

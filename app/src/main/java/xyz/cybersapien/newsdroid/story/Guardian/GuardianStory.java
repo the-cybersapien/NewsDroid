@@ -1,4 +1,4 @@
-package xyz.cybersapien.newsdroid.story;
+package xyz.cybersapien.newsdroid.story.Guardian;
 
 import android.os.Build;
 import android.text.Html;

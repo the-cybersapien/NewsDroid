@@ -21,9 +21,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import xyz.cybersapien.newsdroid.story.GuardianStory;
-import xyz.cybersapien.newsdroid.story.GuardianStoryAdapter;
-import xyz.cybersapien.newsdroid.story.GuardianStoryLoader;
+import xyz.cybersapien.newsdroid.story.Guardian.GuardianStory;
+import xyz.cybersapien.newsdroid.story.Guardian.GuardianStoryAdapter;
+import xyz.cybersapien.newsdroid.story.Guardian.GuardianStoryLoader;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<GuardianStory>> {
 
@@ -98,6 +98,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if (id==R.id.action_settings){
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);
+        } if (id == R.id.action_test){
+            startActivity(new Intent(this, TestActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

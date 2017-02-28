@@ -5,6 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
+import xyz.cybersapien.newsdroid.story.Guardian.GuardianStoryAdapter;
+
 /**
  * Created by ogcybersapien on 7/10/16.
  * Simple RecyclerView subclass that supports providing an empty view
