@@ -9,7 +9,7 @@ import android.provider.BaseColumns;
  * The NewsContract class is used to define a structure of the database.
  * The tables in the Stories database are as follows
  * 1. Sources
- * 2. Story
+ * 2. Article
  */
 
 public final class NewsContract {
@@ -24,7 +24,7 @@ public final class NewsContract {
 
     public static final String PATH_SOURCES = SourceEntry.TABLE_NAME;
 
-    public static final String PATH_STORY = StoryEntry.TABLE_NAME;
+    public static final String PATH_ARTICLE = ArticleEntry.TABLE_NAME;
 
     public static abstract class SourceEntry implements BaseColumns{
 
@@ -60,27 +60,27 @@ public final class NewsContract {
 
     }
 
-    public static abstract class StoryEntry implements BaseColumns{
+    public static abstract class ArticleEntry implements BaseColumns{
 
         /* Table Name */
-        public static final String TABLE_NAME = "story";
+        public static final String TABLE_NAME = "article";
 
-        /* Content URI for Story table*/
-        public static final Uri STORY_CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_STORY);
+        /* Content URI for Article table*/
+        public static final Uri ARTICLE_CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_ARTICLE);
 
-        /* Columns for stories */
+        /* Columns for Articles */
         public static final String _ID = BaseColumns._ID;
-        public static final String COLUMN_STORY_AUTHOR = "author";
-        public static final String COLUMN_STORY_TITLE = "title";
-        public static final String COLUMN_STORY_DESC = "desc";
-        public static final String COLUMN_STORY_URL = "url";
-        public static final String COLUMN_STORY_IMAGE = "img";
-        public static final String COLUMN_STORY_PUBLISHED = "published";
-        public static final String COLUMN_STORY_SOURCE = "source";
+        public static final String COLUMN_ARTICLE_AUTHOR = "author";
+        public static final String COLUMN_ARTICLE_TITLE = "title";
+        public static final String COLUMN_ARTICLE_DESC = "desc";
+        public static final String COLUMN_ARTICLE_URL = "url";
+        public static final String COLUMN_ARTICLE_IMAGE = "img";
+        public static final String COLUMN_ARTICLE_PUBLISHED = "published";
+        public static final String COLUMN_ARTICLE_SOURCE = "source";
 
         /*Mime Types for different Content URIs*/
-        public static final String CONTENT_LIST_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_STORY;
-        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_STORY;
+        public static final String CONTENT_LIST_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ARTICLE;
+        public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ARTICLE;
 
     }
 }
