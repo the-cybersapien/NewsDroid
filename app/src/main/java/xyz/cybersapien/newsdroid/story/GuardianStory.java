@@ -1,42 +1,45 @@
 package xyz.cybersapien.newsdroid.story;
 
+import android.os.Build;
+import android.text.Html;
+
 /**
  * Created by ogcybersapien on 6/10/16.
- * A custom Object for Story
+ * A custom Object for GuardianStory
  */
 
-public class Story {
+public class GuardianStory {
 
 
-    /*Title of the Story*/
+    /*Title of the GuardianStory*/
     private String title;
-    /*Trailing text of the Story*/
+    /*Trailing text of the GuardianStory*/
     private String subText;
-    /*URL for the Image of the Story*/
+    /*URL for the Image of the GuardianStory*/
     private String imgURL;
-    /*Author of the Story*/
+    /*Author of the GuardianStory*/
     private String byLine;
-    /*Default Value of the Story*/
+    /*Default Value of the GuardianStory*/
     public final static String byLineDefault = "NO_AUTHOR";
-    /*URL to The Guardian page of the Story*/
+    /*URL to The Guardian page of the GuardianStory*/
     private String webLink;
-    /*Publication date of the Story*/
+    /*Publication date of the GuardianStory*/
     private String publicationDate;
 
     /**
-     * Constructor for creating a new Story Object
-     * @param title Title of the Story
-     * @param subText trailText of the Story
+     * Constructor for creating a new GuardianStory Object
+     * @param title Title of the GuardianStory
+     * @param subText trailText of the GuardianStory
      * @param imgURL imageURL of the story
      * @param byLine Name of the Author
      * @param webLink URL to the story on the Guardian
-     * @param publicationDate date of the Story
+     * @param publicationDate date of the GuardianStory
      */
-    public Story(String title, String subText, String imgURL, String byLine, String webLink, String publicationDate) {
+    public GuardianStory(String title, String subText, String imgURL, String byLine, String webLink, String publicationDate) {
         this.title = title;
         this.subText = subText;
         this.imgURL = imgURL;
-        this.byLine = "-".concat(byLine);
+        this.byLine = "By ".concat(byLine);
         this.webLink = webLink;
         this.publicationDate = publicationDate;
     }
@@ -50,11 +53,14 @@ public class Story {
     }
 
     /**
-     * Gets the String representation of the trailing Text of the Story
+     * Gets the String representation of the trailing Text of the GuardianStory
      * @return Trailing Text
      */
     public String getTrailingText() {
-        return subText;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
+            return Html.fromHtml(subText).toString();
+        else
+            return Html.fromHtml(subText, 0).toString();
     }
 
     /**

@@ -11,7 +11,7 @@
     android:layout_marginRight="10dp"
     xmlns:tools="http://schemas.android.com/tools"
     app:cardElevation="10dp"
-    app:contentPadding="5dp"
+    app:cardCornerRadius="0dp"
     app:cardBackgroundColor="@color/cardview_light_background">
 
     <LinearLayout
@@ -19,25 +19,62 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/story_item_imageview"
-            android:adjustViewBounds="true"
-            tools:src="@drawable/placeholder"
-            />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/story_item_title"
-            tools:text="Heading"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:padding="5dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"/>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/story_item_imageview"
+                android:adjustViewBounds="true"
+                tools:src="@drawable/placeholder"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/story_item_title"
+                tools:text="Heading"
+                android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                android:textSize="18dp"
+                android:padding="5dp"
+                android:textColor="@android:color/white"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:background="#33000000"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+        </RelativeLayout>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="The Guardian News Service"
+                android:id="@+id/source_name"
+                android:textAlignment="center"
+                android:textSize="16sp"/>
+
+            <View
+                android:layout_height="2dp"
+                android:layout_width="match_parent"
+                android:background="@color/colorAccent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginLeft="24dp" />
+
+            <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -51,7 +88,7 @@
                 android:paddingLeft="5dp"
                 android:maxLines="1"
                 android:paddingStart="5dp"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 tools:ignore="RtlSymmetry" />
 
             <TextView
@@ -64,19 +101,23 @@
                 android:layout_gravity="end"
                 android:paddingRight="10dp"
                 android:paddingEnd="10dp"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 tools:ignore="RtlSymmetry" />
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/story_item_trailing_text"
-            tools:text="Display the details here. Maximum two lines such as not to create a discrepency in the images."
-            android:maxLines="2"
-            android:typeface="normal"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:textSize="14sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/story_item_trailing_text"
+                tools:text="Display the details here. Maximum two lines such as not to create a discrepency in the images."
+                android:maxLines="3"
+                android:typeface="normal"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                android:textSize="16sp"
+                android:textIsSelectable="false"
+                android:textAlignment="center" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

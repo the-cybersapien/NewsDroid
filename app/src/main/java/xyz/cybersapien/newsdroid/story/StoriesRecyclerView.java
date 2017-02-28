@@ -38,7 +38,7 @@ public class StoriesRecyclerView extends RecyclerView {
         this.emptyView = emptyView;
     }
 
-    public void setAdapter(StoryAdapter adapter) {
+    public void setAdapter(GuardianStoryAdapter adapter) {
         if (getAdapter()!=null){
             getAdapter().unregisterAdapterDataObserver(dataObserver);
         }

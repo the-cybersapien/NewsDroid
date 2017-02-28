@@ -2,10 +2,6 @@ package xyz.cybersapien.newsdroid.network;
 
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,31 +12,24 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
-import xyz.cybersapien.newsdroid.story.Story;
+import java.util.Locale;
 
 /**
- * Created by ogcybersapien on 6/10/16.
- * This Class is a helper Class to be used for formatting and getting data from the network.
- * The Sole Purpose of this class is to keep the main classes clean and clutter free.
+ * Created by ogcybersapien on 2/28/2017.
+ * The NetUtils Class is a general purpose Helper class
+ * All the Different Query Helpers will trace back to this class for the base Request
  */
 
-public final class QueryUtils {
+public class NetUtils {
 
-
-    /** Tag for the log messages */
-    private static final String LOG_TAG = QueryUtils.class.getSimpleName();
-
-
+    private static final String LOG_TAG = "NetUtils";
     /**
-     * Create a private constructor because no one should ever create a {@link QueryUtils} object.
+     * Create a private constructor because no one should ever create a {@link NetUtils} object.
      * This class is only meant to hold static variables and methods, which can be accessed
-     * directly from the class name QueryUtils (and an object instance of QueryUtils is not needed).
+     * directly from the class name NetUtils (and an object instance of NetUtils is not needed).
      */
-    private QueryUtils() {
+    private NetUtils() {
     }
 
     /**
@@ -51,38 +40,23 @@ public final class QueryUtils {
     public static String getDate(String dateTime) {
         if (dateTime != null) {
             try {
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
                 Date thisDate = simpleDateFormat.parse(dateTime);
                 dateTime = SimpleDateFormat.getDateInstance().format(thisDate);
-                } catch (ParseException e) {
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
         return dateTime;
     }
 
-    public static List<Story> fetchStories(String queryUrl) {
-
-        URL url = createURL(queryUrl);
-
-        String jsonResponse = null;
-
-        try {
-            jsonResponse = makeHttpRequest(url);
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem getting HTTP data", e);
-        }
-
-        return getDataFromJson(jsonResponse);
-    }
-
     /**
      * Return the URL from the string.
-     * This method is used to give the fetchStories method a little abstraction and make sure that there is no crash in case of an error
+     * This method is used to give the fetchGuardianStories method a little abstraction and make sure that there is no crash in case of an error
      * @param urlString String url to convert to URL Object
      * @return URL object after conversion from String.
      */
-    private static URL createURL(String urlString) {
+    public static URL createURL(String urlString) {
         URL url = null;
         try {
             url = new URL(urlString);
@@ -97,7 +71,7 @@ public final class QueryUtils {
      * @param url URL to get the data from
      * @return returns JSON String from data from the server
      * */
-    private static String makeHttpRequest(URL url) throws IOException {
+    public static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
 
         /*If url is null no point conitnuing, so return early*/
@@ -124,7 +98,7 @@ public final class QueryUtils {
                 Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem retrieving the Stories from JSON result.");
+            Log.e(LOG_TAG, "Problem with JSON result.");
         } finally {
             /*Close the urlConnection and input stream after we're done getting data*/
             if (urlConnection != null){
@@ -141,7 +115,7 @@ public final class QueryUtils {
         return jsonResponse;
     }
 
-    private static String readFromStream(InputStream inputStream) throws IOException {
+    public static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
 
         if (inputStream!=null){
@@ -154,59 +128,5 @@ public final class QueryUtils {
             };
         }
         return output.toString();
-    }
-
-    public static List<Story> getDataFromJson(String storyJSON){
-
-        //If storyJSON is empty, return early
-        if (storyJSON.isEmpty()){
-            return null;
-        }
-
-        //Create an Empty List of Stories to Start
-        List<Story> stories = new ArrayList<Story>();
-
-        //Start parsing JSON data to add Stories to.
-        try{
-            //Create the root JSON Object from the reponse String
-            JSONObject rootObject = new JSONObject(storyJSON);
-
-            //Extract the response JSONOnject from the root Object
-            JSONObject responseObject = rootObject.getJSONObject("response");
-
-            //Get result Array from JSON
-            JSONArray resultsArray = responseObject.getJSONArray("results");
-
-            for (int i=0;i<resultsArray.length();i++){
-                JSONObject currentStory = resultsArray.getJSONObject(i);
-
-                //Get story Title
-                String title = currentStory.getString("webTitle");
-
-                //Get Story publication Date
-                String pubDate = getDate(currentStory.getString("webPublicationDate"));
-
-                //Get Story URL
-                String storyURL = currentStory.getString("webUrl");
-
-                //Get the fields JSON Object
-                JSONObject currentStoryField = currentStory.getJSONObject("fields");
-
-                //Get associated Image URL
-                String storyImageURL = currentStoryField.getString("thumbnail");
-
-                //Get the Authors Details
-                String storyByLine = currentStoryField.optString("byline", Story.byLineDefault);
-
-                //Get the trail Text
-                String trailText = currentStoryField.getString("trailText");
-
-                stories.add(new Story(title, trailText, storyImageURL, storyByLine, storyURL,pubDate));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return stories;
     }
 }

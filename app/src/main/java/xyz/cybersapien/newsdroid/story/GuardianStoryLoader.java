@@ -5,19 +5,19 @@ import android.content.Context;
 
 import java.util.List;
 
-import xyz.cybersapien.newsdroid.network.QueryUtils;
+import xyz.cybersapien.newsdroid.network.GuardianUtils;
 
 /**
  * Created by ogcybersapien on 7/10/16.
  * Custom Loader for the stories
  */
 
-public class StoryLoader extends AsyncTaskLoader<List<Story>> {
+public class GuardianStoryLoader extends AsyncTaskLoader<List<GuardianStory>> {
 
     /* Query URL */
     private String queryUrl;
 
-    public StoryLoader(Context context, String url) {
+    public GuardianStoryLoader(Context context, String url) {
         super(context);
         queryUrl = url;
     }
@@ -28,13 +28,12 @@ public class StoryLoader extends AsyncTaskLoader<List<Story>> {
     }
 
     @Override
-    public List<Story> loadInBackground() {
+    public List<GuardianStory> loadInBackground() {
         if (queryUrl == null){
             return null;
         }
 
         //Perform the network request, parse the response, and extract the stories.
-        List<Story> stories = QueryUtils.fetchStories(queryUrl);
-        return stories;
+        return GuardianUtils.fetchGuardianStories(queryUrl);
     }
 }

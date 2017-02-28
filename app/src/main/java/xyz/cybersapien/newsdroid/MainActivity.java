@@ -21,11 +21,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import xyz.cybersapien.newsdroid.story.Story;
-import xyz.cybersapien.newsdroid.story.StoryAdapter;
-import xyz.cybersapien.newsdroid.story.StoryLoader;
+import xyz.cybersapien.newsdroid.story.GuardianStory;
+import xyz.cybersapien.newsdroid.story.GuardianStoryAdapter;
+import xyz.cybersapien.newsdroid.story.GuardianStoryLoader;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Story>> {
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<GuardianStory>> {
 
     /**
      * Constant value for the earthquake loader ID. We can choose any integer.
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final String GUARDIAN_URL = "https://content.guardianapis.com/";
 
     /*Adapter for the stories*/
-    private StoryAdapter storyAdapter;
+    private GuardianStoryAdapter guardianStoryAdapter;
 
     /*Create the Recycler View*/
     private RecyclerView storyListView;
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private TextView hintView;
 
     /*Reference the stories.*/
-    List<Story> stories;
+    List<GuardianStory> stories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +74,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         storyListView = (RecyclerView) findViewById(R.id.stories_list);
         storyListView.setVisibility(View.GONE);
 
-        //Create Story list;
+        //Create GuardianStory list;
         stories = new ArrayList<>();
-        //get StoryAdapter
-        storyAdapter = new StoryAdapter(this, stories);
+        //get GuardianStoryAdapter
+        guardianStoryAdapter = new GuardianStoryAdapter(this, stories);
 
-        storyListView.setAdapter(storyAdapter);
+        storyListView.setAdapter(guardianStoryAdapter);
 
         storyListView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
     @Override
-    public Loader<List<Story>> onCreateLoader(int id, Bundle args) {
+    public Loader<List<GuardianStory>> onCreateLoader(int id, Bundle args) {
         progressBar.setVisibility(View.VISIBLE);
         hintView.setVisibility(View.GONE);
 
@@ -140,15 +140,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         /**/
         uriBuilder.appendQueryParameter("api-key","test");
 
-        return new StoryLoader(this, uriBuilder.toString());
+        return new GuardianStoryLoader(this, uriBuilder.toString());
     }
 
     @Override
-    public void onLoadFinished(Loader<List<Story>> loader, List<Story> storyList) {
-        storyAdapter.clearData();
-        if (storyList!=null && !storyList.isEmpty()){
-            stories.addAll(storyList);
-            storyAdapter.notifyDataSetChanged();
+    public void onLoadFinished(Loader<List<GuardianStory>> loader, List<GuardianStory> guardianStoryList) {
+        guardianStoryAdapter.clearData();
+        if (guardianStoryList !=null && !guardianStoryList.isEmpty()){
+            stories.addAll(guardianStoryList);
+            guardianStoryAdapter.notifyDataSetChanged();
             storyListView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
             hintView.setVisibility(View.GONE);
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     //On Reset we want to clear out all data.
     @Override
-    public void onLoaderReset(Loader<List<Story>> loader) {
-        storyAdapter.clearData();
+    public void onLoaderReset(Loader<List<GuardianStory>> loader) {
+        guardianStoryAdapter.clearData();
     }
 }
