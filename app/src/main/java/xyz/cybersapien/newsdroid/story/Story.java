@@ -1,4 +1,4 @@
-package xyz.cybersapien.newsdroid;
+package xyz.cybersapien.newsdroid.story;
 
 /**
  * Created by ogcybersapien on 6/10/16.

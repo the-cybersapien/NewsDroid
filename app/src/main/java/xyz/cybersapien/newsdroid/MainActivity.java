@@ -21,6 +21,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import xyz.cybersapien.newsdroid.story.Story;
+import xyz.cybersapien.newsdroid.story.StoryAdapter;
+import xyz.cybersapien.newsdroid.story.StoryLoader;
+
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Story>> {
 
     /**

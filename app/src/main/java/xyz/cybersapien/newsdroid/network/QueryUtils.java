@@ -1,4 +1,4 @@
-package xyz.cybersapien.newsdroid;
+package xyz.cybersapien.newsdroid.network;
 
 import android.util.Log;
 
@@ -19,6 +19,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import xyz.cybersapien.newsdroid.story.Story;
 
 /**
  * Created by ogcybersapien on 6/10/16.

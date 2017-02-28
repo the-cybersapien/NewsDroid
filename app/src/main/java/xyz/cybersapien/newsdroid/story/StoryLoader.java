@@ -1,9 +1,11 @@
-package xyz.cybersapien.newsdroid;
+package xyz.cybersapien.newsdroid.story;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
 import java.util.List;
+
+import xyz.cybersapien.newsdroid.network.QueryUtils;
 
 /**
  * Created by ogcybersapien on 7/10/16.
