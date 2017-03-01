@@ -107,8 +107,6 @@ public class NewsProvider extends ContentProvider {
         }
     }
 
-    // TODO: Write Logic for the following methods for all the tables
-
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
@@ -198,6 +196,50 @@ public class NewsProvider extends ContentProvider {
         }
 
         return rowsUpdated;
+    }
+
+    @Override
+    public int bulkInsert(Uri uri, ContentValues[] values) {
+        Log.d(TAG, "bulkInsert: " + newsUriMatcher.toString());
+        final SQLiteDatabase db = newsDbHelper.getWritableDatabase();
+        int match = newsUriMatcher.match(uri);
+        switch (match){
+            case SOURCE:
+                db.beginTransaction();
+                int retCount = 0;
+                try {
+                    for (ContentValues val :
+                            values) {
+                        long _id = db.insert(NewsContract.SourceEntry.TABLE_NAME, null, val);
+                        if (_id != -1){
+                            retCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return retCount;
+            case ARTICLE:
+                db.beginTransaction();
+                retCount = 0;
+                try{
+                    for (ContentValues val : values) {
+                        long _id = db.insert(NewsContract.ArticleEntry.TABLE_NAME, null, val);
+                        if (_id != -1){
+                            retCount++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                getContext().getContentResolver().notifyChange(uri, null);
+                return retCount;
+            default:
+                return 0;
+        }
     }
 
     private long addSource(ContentValues values){

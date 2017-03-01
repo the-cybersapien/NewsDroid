@@ -43,7 +43,6 @@ public final class NewsContract {
         public static final String COLUMN_SOURCE_CATEGORY = "category";
         public static final String COLUMN_SOURCE_LANGUAGE = "lang";
         public static final String COLUMN_SOURCE_COUNTRY = "country";
-        public static final String COLUMN_SOURCE_LOGO_URL = "logo_url";
         /**
          * The sort Works in the following manner:
          * Add 1 for popular
@@ -77,6 +76,7 @@ public final class NewsContract {
         public static final String COLUMN_ARTICLE_URL = "url";
         public static final String COLUMN_ARTICLE_IMAGE = "img";
         public static final String COLUMN_ARTICLE_PUBLISHED = "published";
+        public static final String COLUMN_ARTICLE_ADDED = "added";
         public static final String COLUMN_ARTICLE_SOURCE = "source";
 
         /*Mime Types for different Content URIs*/

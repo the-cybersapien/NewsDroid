@@ -29,7 +29,7 @@ public class NewsDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         /* Source Table */
         String SQL_CREATE_SOURCE_TABLE = "CREATE TABLE " + SourceEntry.TABLE_NAME
-                + " (" + SourceEntry._ID + " INTEGER PRIMARY KEY AUTO INCREMENT, "
+                + " (" + SourceEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + SourceEntry.COLUMN_SOURCE_NAME + " TEXT NOT NULL, "
                 + SourceEntry.COLUMN_SOURCE_SID + " TEXT NOT NULL, "
                 + SourceEntry.COLUMN_SOURCE_DESC + " TEXT NOT NULL, "
@@ -37,20 +37,20 @@ public class NewsDbHelper extends SQLiteOpenHelper {
                 + SourceEntry.COLUMN_SOURCE_CATEGORY + " TEXT NOT NULL, "
                 + SourceEntry.COLUMN_SOURCE_LANGUAGE + " TEXT NOT NULL, "
                 + SourceEntry.COLUMN_SOURCE_COUNTRY + " TEXT NOT NULL, "
-                + SourceEntry.COLUMN_SOURCE_LOGO_URL + " TEXT NOT NULL, "
                 + SourceEntry.COLUMN_SOURCE_SORT + " INTEGER NOT NULL);";
 
         db.execSQL(SQL_CREATE_SOURCE_TABLE);
 
         String SQL_CREATE_ARTICLES_TABLE = "CREATE TABLE " + ArticleEntry.TABLE_NAME
-                + " (" + ArticleEntry._ID + " INTEGER PRIMARY KEY AUTO INCREMENT, "
+                + " (" + ArticleEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + ArticleEntry.COLUMN_ARTICLE_TITLE + " TEXT NOT NULL, "
                 + ArticleEntry.COLUMN_ARTICLE_DESC + " TEXT NOT NULL, "
                 + ArticleEntry.COLUMN_ARTICLE_URL + " TEXT NOT NULL, "
                 + ArticleEntry.COLUMN_ARTICLE_IMAGE + " TEXT NOT NULL, "
                 + ArticleEntry.COLUMN_ARTICLE_PUBLISHED + " REAL NOT NULL, "
                 + ArticleEntry.COLUMN_ARTICLE_AUTHOR + " TEXT NOT NULL, "
-                + ArticleEntry.COLUMN_ARTICLE_SOURCE + "TEXT NOT NULL, "
+                + ArticleEntry.COLUMN_ARTICLE_SOURCE + " TEXT NOT NULL, "
+                + ArticleEntry.COLUMN_ARTICLE_ADDED + " REAL NOT NULL, "
                 + "FOREIGN KEY(" + ArticleEntry.COLUMN_ARTICLE_SOURCE
                 + ") REFERENCES " + SourceEntry.TABLE_NAME + "(" + SourceEntry._ID + ")"
                 + ");";
@@ -60,6 +60,14 @@ public class NewsDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        // This database is only a cache for online data, so its upgrade policy is
+        // to simply to discard the data and start over
+        // Note that this only fires if you change the version number for your database.
+        // It does NOT depend on the version number for your application.
+        // If you want to update the schema without wiping data, commenting out the next 2 lines
+        // should be your top priority before modifying this method.
+        db.execSQL("DROP TABLE IF EXISTS " + ArticleEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + SourceEntry.TABLE_NAME);
+        onCreate(db);
     }
 }

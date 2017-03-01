@@ -8,6 +8,12 @@
         android:id="@+id/action_settings"
         android:title="Settings"
         android:orderInCategory="100"
-        app:showAsAction="ifRoom"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/action_test"
+        android:title="Test"
+        android:orderInCategory="1"
+        app:showAsAction="never"
         />
 </menu>

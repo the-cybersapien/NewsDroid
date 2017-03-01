@@ -30,6 +30,12 @@
                 android:value="xyz.cybersapien.newsdroid.MainActivity" />
         </activity>
         <activity android:name=".TestActivity"></activity>
+
+        <provider
+            android:authorities="xyz.cybersapien.newsdroid"
+            android:name=".database.NewsProvider"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>
