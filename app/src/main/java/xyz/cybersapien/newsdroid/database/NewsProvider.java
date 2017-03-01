@@ -8,8 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
-import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * Created by ogcybersapien on 2/28/2017.
@@ -54,7 +53,7 @@ public class NewsProvider extends ContentProvider {
         // Get a readable Database
         SQLiteDatabase db = newsDbHelper.getReadableDatabase();
 
-        Cursor cursor = null;
+        Cursor cursor;
 
         int match = newsUriMatcher.match(uri);
         switch (match){
@@ -113,16 +112,124 @@ public class NewsProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        return null;
+        int match = newsUriMatcher.match(uri);
+        Long id;
+        switch (match){
+            case SOURCE:
+                id = addSource(values);
+                break;
+            case ARTICLE:
+                id = addArticle(values);
+                break;
+            default:
+                throw new IllegalArgumentException("No Matching URI found.");
+        }
+
+        if (id == -1){
+            Log.e(TAG, "Failed to insert row for " + uri);
+            return null;
+        }
+        getContext().getContentResolver().notifyChange(uri, null);
+        return ContentUris.withAppendedId(uri, id);
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        int match = newsUriMatcher.match(uri);
+        int rowsDeleted;
+
+        SQLiteDatabase db = newsDbHelper.getWritableDatabase();
+
+        switch (match){
+            case SOURCE:
+                rowsDeleted = db.delete(NewsContract.SourceEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case SOURCE_ID:
+                selection = NewsContract.SourceEntry._ID + "=?";
+                selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
+                rowsDeleted = db.delete(NewsContract.SourceEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case ARTICLE:
+                rowsDeleted = db.delete(NewsContract.ArticleEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case ARTICLE_ID:
+                selection = NewsContract.ArticleEntry._ID + "=?";
+                selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
+                rowsDeleted = db.delete(NewsContract.ArticleEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+                default:
+                    throw new IllegalArgumentException("No match found for uri " + uri);
+        }
+
+        if (rowsDeleted != 0){
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return rowsDeleted;
     }
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return 0;
+        int match = newsUriMatcher.match(uri);
+        int rowsUpdated = 0;
+
+        switch (match){
+            case SOURCE:
+                rowsUpdated = updateSource(values, selection, selectionArgs);
+                break;
+            case SOURCE_ID:
+                selection = NewsContract.SourceEntry._ID + "=?";
+                selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
+                rowsUpdated = updateSource(values, selection, selectionArgs);
+                break;
+            case ARTICLE:
+                rowsUpdated = updateArticle(values, selection, selectionArgs);
+                break;
+            case ARTICLE_ID:
+                selection = NewsContract.ArticleEntry._ID + "=?";
+                selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
+                rowsUpdated = updateArticle(values, selection, selectionArgs);
+                break;
+            default:
+                throw new IllegalArgumentException("No Valid match for URI: " + uri);
+        }
+        if (rowsUpdated != 0){
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        return rowsUpdated;
+    }
+
+    private long addSource(ContentValues values){
+        // TODO: Add Source Validation
+        SQLiteDatabase db = newsDbHelper.getWritableDatabase();
+        return db.insert(NewsContract.SourceEntry.TABLE_NAME,
+                null, values);
+    }
+
+    private long addArticle(ContentValues values){
+        // TODO: Add Article Validation
+        SQLiteDatabase db = newsDbHelper.getWritableDatabase();
+        return db.insert(NewsContract.ArticleEntry.TABLE_NAME,
+                null, values);
+    }
+
+    private int updateSource(ContentValues values, String selection, String[] selectionArgs){
+        if (values.size() == 0){
+            return 0;
+        }
+        // TODO: Add Source Validation
+        SQLiteDatabase db = newsDbHelper.getWritableDatabase();
+        return db.update(NewsContract.SourceEntry.TABLE_NAME, values, selection, selectionArgs);
+    }
+
+    private int updateArticle(ContentValues values, String selection, String[] selectionArgs){
+        if (values.size() == 0){
+            return 0;
+        }
+        // TODO: Add Validation
+
+        SQLiteDatabase db = newsDbHelper.getWritableDatabase();
+        return db.update(NewsContract.ArticleEntry.TABLE_NAME, values, selection, selectionArgs);
     }
 }
