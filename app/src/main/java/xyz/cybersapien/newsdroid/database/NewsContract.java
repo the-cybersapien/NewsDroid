@@ -43,6 +43,7 @@ public final class NewsContract {
         public static final String COLUMN_SOURCE_CATEGORY = "category";
         public static final String COLUMN_SOURCE_LANGUAGE = "lang";
         public static final String COLUMN_SOURCE_COUNTRY = "country";
+        public static final String COLUMN_SOURCE_IMAGEURL = "img_url";
         /**
          * The sort Works in the following manner:
          * Add 1 for popular

@@ -37,6 +37,7 @@ public class NewsDbHelper extends SQLiteOpenHelper {
                 + SourceEntry.COLUMN_SOURCE_CATEGORY + " TEXT NOT NULL, "
                 + SourceEntry.COLUMN_SOURCE_LANGUAGE + " TEXT NOT NULL, "
                 + SourceEntry.COLUMN_SOURCE_COUNTRY + " TEXT NOT NULL, "
+                + SourceEntry.COLUMN_SOURCE_IMAGEURL + " TEXT NOT NULL, "
                 + SourceEntry.COLUMN_SOURCE_SORT + " INTEGER NOT NULL);";
 
         db.execSQL(SQL_CREATE_SOURCE_TABLE);

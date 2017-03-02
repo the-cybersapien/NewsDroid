@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);
         } if (id == R.id.action_test){
-            startActivity(new Intent(this, TestActivity.class));
+            startActivity(new Intent(this, SourceListActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,14 +30,16 @@ import xyz.cybersapien.newsdroid.sources.SourceAPI;
 import xyz.cybersapien.newsdroid.sources.SourceAdapter;
 import xyz.cybersapien.newsdroid.sources.SourceInterface;
 
-public class TestActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class SourceListActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    private static final String TAG = "TestActivity";
+    private static final String TAG = "SourceListActivity";
     private static final String[] SOURCE_COLUMNS = {
 
             NewsContract.SourceEntry.TABLE_NAME + "." + NewsContract.SourceEntry._ID,
             NewsContract.SourceEntry.COLUMN_SOURCE_NAME,
             NewsContract.SourceEntry.COLUMN_SOURCE_DESC,
+            NewsContract.SourceEntry.COLUMN_SOURCE_SID,
+            NewsContract.SourceEntry.COLUMN_SOURCE_IMAGEURL,
             NewsContract.SourceEntry.COLUMN_SOURCE_LANGUAGE,
             NewsContract.SourceEntry.COLUMN_SOURCE_CATEGORY,
             NewsContract.SourceEntry.COLUMN_SOURCE_COUNTRY
@@ -51,6 +54,8 @@ public class TestActivity extends AppCompatActivity implements LoaderManager.Loa
     /* Reference to the Progress Bar */
     private ProgressBar progressBar;
 
+    /* Static Loader IDs*/
+    public static final int SOURCE_DB_QUERY_LOADER = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +89,7 @@ public class TestActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     void populateList(){
-        getLoaderManager().initLoader(100, null, this);
+        getLoaderManager().initLoader(SOURCE_DB_QUERY_LOADER, null, this);
     }
 
     void fetchSourcesFromAPI(){
@@ -105,48 +110,8 @@ public class TestActivity extends AppCompatActivity implements LoaderManager.Loa
             public void onResponse(Call<SourceAPI> call, Response<SourceAPI> response) {
                 SourceAPI sourceAPI = response.body();
                 List<Source> sourceList = sourceAPI.getSources();
-                Vector<ContentValues> contentValuesVector = new Vector<ContentValues>(sourceList.size());
-
-                getContentResolver().delete(NewsContract.SourceEntry.SOURCE_CONTENT_URI, null, null);
-
-                for (Source source : sourceList) {
-                    ContentValues cv = new ContentValues();
-                    cv.put(NewsContract.SourceEntry.COLUMN_SOURCE_SID, source.getId());
-                    cv.put(NewsContract.SourceEntry.COLUMN_SOURCE_NAME, source.getName());
-                    cv.put(NewsContract.SourceEntry.COLUMN_SOURCE_DESC, source.getDescription());
-                    cv.put(NewsContract.SourceEntry.COLUMN_SOURCE_URL, source.getUrl());
-                    cv.put(NewsContract.SourceEntry.COLUMN_SOURCE_CATEGORY, source.getCategory());
-                    cv.put(NewsContract.SourceEntry.COLUMN_SOURCE_LANGUAGE, source.getLanguage());
-                    cv.put(NewsContract.SourceEntry.COLUMN_SOURCE_COUNTRY, source.getCountry());
-                    int sortVal = 0;
-                    for (String s : source.getSortBysAvailable()){
-                        switch (s){
-                            case "popular":
-                                sortVal += 1;
-                                break;
-                            case "latest":
-                                sortVal += 2;
-                                break;
-                            case "top":
-                                sortVal += 4;
-                                break;
-                            default:
-                                Log.d(TAG, "onResponse: Got Weird Response: " + s);
-                        }
-                    }
-                    cv.put(NewsContract.SourceEntry.COLUMN_SOURCE_SORT, sortVal);
-                    contentValuesVector.add(cv);
-                }
-
-                int inserted = 0;
-                // add to database
-                if (contentValuesVector.size() > 0){
-                    // Call bulk insert for all the data
-                    inserted = getContentResolver().bulkInsert(NewsContract.SourceEntry.SOURCE_CONTENT_URI, contentValuesVector.toArray(new ContentValues[contentValuesVector.size()]));
-                }
-
-                Log.d(TAG, "Task complete " + inserted + " inserted");
-                populateList();
+                SourceInsertAsyncTask insertAsyncTask = new SourceInsertAsyncTask();
+                insertAsyncTask.execute(sourceList);
             }
 
             @Override
@@ -158,12 +123,14 @@ public class TestActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
-        String sortOrder = NewsContract.SourceEntry.COLUMN_SOURCE_NAME + " ASC";
-
-        Uri query = NewsContract.SourceEntry.SOURCE_CONTENT_URI;
-
-        return new CursorLoader(this, query, SOURCE_COLUMNS, null, null, sortOrder);
+        switch (id){
+            case SOURCE_DB_QUERY_LOADER:
+            String sortOrder = NewsContract.SourceEntry.COLUMN_SOURCE_NAME + " ASC";
+            Uri query = NewsContract.SourceEntry.SOURCE_CONTENT_URI;
+            return new CursorLoader(this, query, SOURCE_COLUMNS, null, null, sortOrder);
+            default:
+                throw new IllegalArgumentException("No Loader with id: " + id + " found");
+        }
     }
 
     @Override
@@ -174,5 +141,65 @@ public class TestActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         sourceAdapter.swapCursor(null);
+    }
+
+    private class SourceInsertAsyncTask extends AsyncTask<List<Source>, Void, Integer> {
+
+        @SafeVarargs
+        @Override
+        protected final Integer doInBackground(List<Source>... params) {
+            if (params.length == 0)
+                return -1;
+            List<Source> sourceList = params[0];
+            Vector<ContentValues> contentValuesVector = new Vector<ContentValues>(sourceList.size());
+
+            getContentResolver().delete(NewsContract.SourceEntry.SOURCE_CONTENT_URI, null, null);
+
+            for (Source source : sourceList) {
+                ContentValues cv = new ContentValues();
+                cv.put(NewsContract.SourceEntry.COLUMN_SOURCE_SID, source.getId());
+                cv.put(NewsContract.SourceEntry.COLUMN_SOURCE_NAME, source.getName());
+                cv.put(NewsContract.SourceEntry.COLUMN_SOURCE_DESC, source.getDescription());
+                cv.put(NewsContract.SourceEntry.COLUMN_SOURCE_URL, source.getUrl());
+                cv.put(NewsContract.SourceEntry.COLUMN_SOURCE_CATEGORY, source.getCategory());
+                cv.put(NewsContract.SourceEntry.COLUMN_SOURCE_LANGUAGE, source.getLanguage());
+                cv.put(NewsContract.SourceEntry.COLUMN_SOURCE_COUNTRY, source.getCountry());
+                cv.put(NewsContract.SourceEntry.COLUMN_SOURCE_IMAGEURL, source.getUrlsToLogos().getSmall());
+                int sortVal = 0;
+                for (String s : source.getSortBysAvailable()){
+                    switch (s){
+                        case "popular":
+                            sortVal += 1;
+                            break;
+                        case "latest":
+                            sortVal += 2;
+                            break;
+                        case "top":
+                            sortVal += 4;
+                            break;
+                        default:
+                            Log.d(TAG, "onResponse: Got Weird Response: " + s);
+                    }
+                }
+                cv.put(NewsContract.SourceEntry.COLUMN_SOURCE_SORT, sortVal);
+                contentValuesVector.add(cv);
+            }
+
+            int inserted = 0;
+            // add to database
+            if (contentValuesVector.size() > 0){
+                inserted = getContentResolver().bulkInsert(NewsContract.SourceEntry.SOURCE_CONTENT_URI, contentValuesVector.toArray(new ContentValues[contentValuesVector.size()]));
+            }
+
+            Log.d(TAG, "Task complete " + inserted + " inserted");
+            return inserted;
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            if (integer == -1 || integer == 0)
+                return;
+            populateList();
+        }
     }
 }

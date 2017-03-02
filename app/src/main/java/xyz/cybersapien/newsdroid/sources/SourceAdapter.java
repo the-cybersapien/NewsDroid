@@ -6,7 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,12 +54,12 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Source current = sourceList.get(position);
-
         holder.sourceNameTextView.setText(current.getName());
         holder.sourceDescTextView.setText(current.getDescription());
         holder.sourceLangTextView.setText(current.getLanguage());
         holder.sourceCatTextView.setText(current.getCategory());
         holder.sourceCountryTextView.setText(current.getCountry());
+        Picasso.with(context).load(current.getUrlToImage()).into(holder.sourceImgImageView);
     }
 
     @Override
@@ -70,6 +73,10 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
         notifyDataSetChanged();
     }
 
+    /**
+     * Adds cursor data to the sourceList
+     * @param cursor with the database entries
+     */
     private void cursorToList(Cursor cursor){
         if (cursor == null){
             sourceList.clear();
@@ -78,13 +85,25 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
         for (int i = 0; i < cursor.getCount(); i++) {
             cursor.moveToPosition(i);
             Source s = new Source();
+            s.setId(cursor.getString(cursor.getColumnIndex(NewsContract.SourceEntry.COLUMN_SOURCE_SID)));
             s.setName(cursor.getString(cursor.getColumnIndex(NewsContract.SourceEntry.COLUMN_SOURCE_NAME)));
             s.setDescription(cursor.getString(cursor.getColumnIndex(NewsContract.SourceEntry.COLUMN_SOURCE_DESC)));
             s.setLanguage(cursor.getString(cursor.getColumnIndex(NewsContract.SourceEntry.COLUMN_SOURCE_LANGUAGE)));
             s.setCategory(cursor.getString(cursor.getColumnIndex(NewsContract.SourceEntry.COLUMN_SOURCE_CATEGORY)));
             s.setCountry(cursor.getString(cursor.getColumnIndex(NewsContract.SourceEntry.COLUMN_SOURCE_COUNTRY)));
-            sourceList.add(s);
+            s.setUrlToImage(cursor.getString(cursor.getColumnIndex(NewsContract.SourceEntry.COLUMN_SOURCE_IMAGEURL)));
+            if (!exists(s)){
+                sourceList.add(s);
+            }
         }
+    }
+
+    private boolean exists(Source c){
+        for (Source s : sourceList) {
+            if (s.getId() == c.getId())
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -97,6 +116,7 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
         public TextView sourceLangTextView;
         public TextView sourceCatTextView;
         public TextView sourceCountryTextView;
+        public ImageView sourceImgImageView;
         protected View rootView;
 
         public ViewHolder(View itemView) {
@@ -107,6 +127,7 @@ public class SourceAdapter extends RecyclerView.Adapter<SourceAdapter.ViewHolder
             sourceLangTextView = (TextView) rootView.findViewById(R.id.source_item_lang);
             sourceCatTextView = (TextView) rootView.findViewById(R.id.source_item_category);
             sourceCountryTextView = (TextView) rootView.findViewById(R.id.source_item_country);
+            sourceImgImageView = (ImageView) rootView.findViewById(R.id.source_item_img);
         }
     }
 

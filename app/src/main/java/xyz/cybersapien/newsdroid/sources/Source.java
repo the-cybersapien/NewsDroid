@@ -40,6 +40,16 @@ public class Source {
     @Expose
     private List<String> sortBysAvailable = null;
 
+    private String urlToImage;
+
+    public String getUrlToImage() {
+        return urlToImage;
+    }
+
+    public void setUrlToImage(String urlToImage) {
+        this.urlToImage = urlToImage;
+    }
+
     public String getId() {
         return id;
     }
