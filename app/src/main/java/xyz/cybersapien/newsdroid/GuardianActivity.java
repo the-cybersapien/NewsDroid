@@ -25,7 +25,7 @@ import xyz.cybersapien.newsdroid.story.Guardian.GuardianStory;
 import xyz.cybersapien.newsdroid.story.Guardian.GuardianStoryAdapter;
 import xyz.cybersapien.newsdroid.story.Guardian.GuardianStoryLoader;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<GuardianStory>> {
+public class GuardianActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<GuardianStory>> {
 
     /**
      * Constant value for the earthquake loader ID. We can choose any integer.
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int STORY_LOADER_ID = 1;
 
     /*Log Tag for the Activity*/
-    private static final String LOG_TAG = MainActivity.class.getName();
+    private static final String LOG_TAG = GuardianActivity.class.getName();
 
     /*Endpoint of the URL to The Guardian*/
     private static final String GUARDIAN_URL = "https://content.guardianapis.com/";
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_guardian);
 
         loaderManager = getLoaderManager();
 
@@ -104,6 +104,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * This method starts the loader to get news Stories,
+     * if there is no connection, it shows the hintView stating the error
+     */
     private void startLoad(){
         //Create the connectivity Manager and NetworkInfo  objects to check for Network connectivity
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -121,6 +125,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
 
+    /**
+     * On Create Loader handles the setting of the View to loading and then goes on to initiate the network call i the background.\
+     */
     @Override
     public Loader<List<GuardianStory>> onCreateLoader(int id, Bundle args) {
         progressBar.setVisibility(View.VISIBLE);
@@ -145,6 +152,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         return new GuardianStoryLoader(this, uriBuilder.toString());
     }
 
+    /**
+     * OnLoadFinish Method handles the loading of stories in the list,
+     * If the list is empty, it shows the error view
+     */
     @Override
     public void onLoadFinished(Loader<List<GuardianStory>> loader, List<GuardianStory> guardianStoryList) {
         guardianStoryAdapter.clearData();

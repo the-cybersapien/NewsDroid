@@ -51,25 +51,20 @@ public class SourceListActivity extends AppCompatActivity implements LoaderManag
     /* RecyclerView for the list */
     private RecyclerView sourceListView;
 
-    /* Reference to the Progress Bar */
-    private ProgressBar progressBar;
-
     /* Static Loader IDs*/
     public static final int SOURCE_DB_QUERY_LOADER = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.activity_sources);
 
         sourceAdapter = new SourceAdapter(this, null);
 
         sourceListView = (RecyclerView) findViewById(R.id.sources_list);
+        sourceListView.setLayoutManager(new LinearLayoutManager(this));
         sourceListView.setAdapter(sourceAdapter);
 
-        sourceListView.setLayoutManager(new LinearLayoutManager(this));
-
-        // TODO: Attach an onclick-Listener
         populateList();
     }
 
@@ -116,7 +111,7 @@ public class SourceListActivity extends AppCompatActivity implements LoaderManag
 
             @Override
             public void onFailure(Call<SourceAPI> call, Throwable t) {
-
+                Log.d(TAG, "onFailure: Failed to get data" + t.getMessage());
             }
         });
     }
@@ -135,6 +130,10 @@ public class SourceListActivity extends AppCompatActivity implements LoaderManag
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (data.getCount() < 1){
+            fetchSourcesFromAPI();
+            return;
+        }
         sourceAdapter.swapCursor(data);
     }
 

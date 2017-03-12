@@ -11,6 +11,8 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+
+        buildConfigField "String", "NewsAPIKey", '"eb4537ae162b4d1faa4a9b50cf51265b"'
     }
     buildTypes {
         release {
@@ -35,4 +37,5 @@ dependencies {
     compile 'com.android.support:support-vector-drawable:25.2.0'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:recyclerview-v7:25.2.0'
+    compile 'com.github.the-cybersapien:recyclerELE:v1.0'
 }

@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".SourceListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,12 +24,12 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".SourceListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="xyz.cybersapien.newsdroid.MainActivity" />
+                android:value="xyz.cybersapien.newsdroid.SourceListActivity" />
         </activity>
-        <activity android:name=".SourceListActivity"></activity>
+        <activity android:name=".GuardianActivity"></activity>
 
         <provider
             android:authorities="xyz.cybersapien.newsdroid"
