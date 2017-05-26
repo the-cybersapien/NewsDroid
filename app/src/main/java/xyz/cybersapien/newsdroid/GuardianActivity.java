@@ -99,7 +99,7 @@ public class GuardianActivity extends AppCompatActivity implements LoaderManager
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);
         } if (id == R.id.action_test){
-            startActivity(new Intent(this, SourceListActivity.class));
+            startLoad();
         }
         return super.onOptionsItemSelected(item);
     }

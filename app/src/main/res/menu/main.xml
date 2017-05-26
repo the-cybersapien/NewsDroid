@@ -12,7 +12,7 @@
         />
     <item
         android:id="@+id/action_test"
-        android:title="Test"
+        android:title="Reload"
         android:orderInCategory="1"
         app:showAsAction="never"
         />
